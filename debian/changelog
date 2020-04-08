@@ -1,0 +1,6 @@
+docker-cloud (0.0.2) UNRELEASED; urgency=medium
+
+  * Initial release.
+  * Switch to docker-ce
+
+ -- Ryan Northey <ryan@synca.io>  Tue, 28 Apr 2020 09:24:44 +0100

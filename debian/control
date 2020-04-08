@@ -1,0 +1,15 @@
+Source: docker-cloud
+Section: devel
+Priority: optional
+Maintainer: "Ryan Northey" <ryan@synca.io>
+Build-Depends: debhelper (>=11~)
+Standards-Version: 4.1.4
+Homepage: https://github.com/phlax/docker-cloud
+
+Package: docker-cloud
+Section: devel
+Priority: optional
+Architecture: all
+Depends: byobu, docker-ce, emacs-goodies-el, emacs-nox, git, gpg, jq, locales, openssh-server, procps, shorewall, sudo, virtualenv, yaml-mode
+Description: Docker cloud setup
+ Add dependencies, configuration and setup for docker-cloud servers
