@@ -1,0 +1,6 @@
+*~
+debian/.debhelper
+debian/docker-cloud
+debian/*.log
+debian/debhelper-build-stamp
+debian/files
