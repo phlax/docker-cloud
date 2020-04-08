@@ -1,0 +1,41 @@
+#!/bin/bash -e
+
+
+CMD=$1
+
+. /usr/lib/docker-cloud/functions
+
+
+case $CMD in
+    unpack-keys )
+	dc_unpack_keys "$2" "$3"
+	;;
+    create-apps-user )
+	dc_create_apps_user
+	;;
+    create-docker-env )
+	dc_create_docker_env
+	;;
+    create-swap )
+	dc_create_swap
+	;;
+    create-users )
+	dc_create_users "$2"
+	;;
+    disable-password-login )
+	dc_disable_password_login
+	;;
+    disable-root-login )
+	dc_disable_root_login
+	;;
+    enable-firewall )
+	dc_enable_firewall
+	;;
+    install )
+	dc_create_swap
+	dc_create_apps_user
+	dc_create_docker_env
+	dc_enable_firewall
+	dc_setup_systemd
+	;;
+esac
