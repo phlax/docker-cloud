@@ -1,0 +1,21 @@
+# https://travis-ci.org/#!/phlax/docker-cloud
+
+dist: bionic
+language: python
+
+install:
+  - make testenv
+
+script:
+  - . test.env
+  - $CLOUD pysh ./tmp/tests/runtest
+  - shellcheck -x usr/bin/docker-cloud
+  - shellcheck -x usr/lib/docker-cloud/*
+
+deploy:
+  provider: script
+  script: make release
+  skip_cleanup: true
+  on:
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^(master)$
