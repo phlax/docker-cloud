@@ -1,0 +1,15 @@
+version: "2.4"
+services:
+  cloud:
+    image: debian:buster-slim
+    privileged: true
+    command: tail -f /dev/null
+    environment:
+      - TERM=linux
+      - DEBIAN_FRONTEND=noninteractive
+    volumes:
+      - ${PWD}/dist:/tmp/dist
+      - ${PWD}/tests:/tmp/tests
+      - ${PWD}/swap:/var/swap
+      - ${PWD}/test.key:/tmp/test.key
+      - /tmp/secret:/tmp/secret
