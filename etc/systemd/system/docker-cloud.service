@@ -1,0 +1,14 @@
+[Unit]
+Description=Cloud container composition
+After=network.target docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/docker
+# ExecStartPre=/usr/local/bin/configure-env
+ExecStart=/docker/bin/docker-compose up -d
+ExecStop=/docker/bin/docker-compose stop
+
+[Install]
+WantedBy=multi-user.target
