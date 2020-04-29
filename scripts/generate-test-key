@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cat >testkey <<EOF
+%echo Generating a basic OpenPGP key
+%no-protection
+Key-Type: RSA
+Key-Length: 4096
+Name-Real: Docker Cloud
+Name-Email: docker@c.loud
+Expire-Date: 0
+%commit
+%echo done
+EOF
+
+gpg --batch --generate-key testkey
