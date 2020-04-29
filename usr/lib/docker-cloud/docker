@@ -1,0 +1,42 @@
+#!/bin/bash -e
+
+DOCKER_DIR=/docker
+
+
+. /usr/lib/docker-cloud/common
+
+
+dc_create_docker_env () {
+    mkdir -p "$DOCKER_DIR"
+    chown apps:apps "$DOCKER_DIR"
+    cd "$DOCKER_DIR"
+    if [ -d "$DOCKER_DIR/bin" ]; then
+	sudo -u apps bash -c "\
+	  . bin/activate \
+	    && if [ -f docker-compose.yml ]; then docker-compose pull; fi"
+	return
+    fi
+    sudo -u apps bash -c "\
+    	virtualenv . -p /usr/bin/python3 \
+	  && . bin/activate \
+	  && pip install docker-compose \
+	  &&  if [ -f docker-compose.yml ]; then docker-compose pull; fi"
+}
+
+
+dc_enable_firewall () {
+    sed -i 's|[#]*startup=0|startup=1|g' /etc/default/shorewall
+    sed -i 's|[#]*DOCKER=No|DOCKER=Yes|g' /etc/shorewall/shorewall.conf
+    if systemctl is-system-running; then
+	systemctl daemon-reload
+	systemctl restart shorewall
+    fi
+}
+
+
+dc_setup_systemd () {
+    if systemctl is-system-running; then
+	systemctl daemon-reload
+    fi
+    systemctl enable docker-cloud
+}

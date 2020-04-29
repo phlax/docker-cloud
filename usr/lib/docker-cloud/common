@@ -1,0 +1,35 @@
+#!/bin/bash -e
+
+
+dc_ls_dirs () {
+    find "$1" -maxdepth 1 -mindepth 1 -name '*' -type d -printf '%f\n'
+}
+
+
+dc_log () {
+    echo "${*}"
+}
+
+
+dc_log_warn () {
+    echo "WARNING: ${*}" >&2
+}
+
+
+dc_log_err () {
+    echo "ERROR: ${*}" >&2
+}
+
+
+dc_has_user_account () {
+    local user users
+    users=$(getent passwd | grep -v nobody | awk -F: '$3 > 1000 {print $1}')
+    if [ -n "$users" ]; then
+	for user in $users; do
+	    if [ -f "/home/$user/.ssh/authorized_keys" ]; then
+		echo "true"
+		return
+	    fi
+	done
+    fi
+}

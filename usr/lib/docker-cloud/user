@@ -1,0 +1,84 @@
+#!/bin/bash -e
+
+
+. /usr/lib/docker-cloud/common
+
+
+dc_create_user () {
+    if id "$2" > /dev/null 2>&1; then
+	echo "User already exists: $2"
+	chown -R "$2":"$2" "$1/$2/home"
+	cp -a "$1/$2/home/." "/home/$2/"
+	return
+    fi
+    echo "Creating user: $2"
+    useradd \
+	-m \
+	-d "/home/$2" \
+	-k /etc/skel \
+	-s /bin/bash \
+	"$2"
+    chown -R "$2":"$2" "$1/$2/home"
+    cp -a "$1/$2/home/." "/home/$2/"
+    gpasswd -a "$2" sudo
+    password=$(cat "$1/$2/password")
+    echo "$2:$password" | chpasswd -e
+    chage -d 0 "$2"
+}
+
+
+dc_create_apps_user () {
+    if id apps > /dev/null 2>&1; then
+	echo "User already exists: apps"
+    else
+	echo "Creating user: apps"
+	useradd \
+	    -m \
+	    -d /home/apps \
+	    -k /etc/skel \
+	    -u 1000 \
+	    -s /bin/bash \
+	    apps
+	gpasswd -a apps docker
+    fi
+    if grep -q "$DOCKER_DIR" /home/apps/.bashrc; then
+	echo "Setting apps virtualenv"
+	echo ". $DOCKER_DIR/bin/activate" >> /home/apps/.bashrc
+	echo "cd $DOCKER_DIR" >> /home/apps/.bashrc
+    fi
+}
+
+
+dc_create_users () {
+    for user in $(dc_ls_dirs "$1"); do
+    	dc_create_user "$1" "$user"
+    done
+
+}
+
+
+dc_disable_password_login () {
+    if [ -z "$(dc_has_user_account)" ]; then
+	dc_log_warn "Cannot disable password login, no users have been setup"
+	return
+    fi
+    sed -i 's|[#]*PasswordAuthentication yes|PasswordAuthentication no|g' /etc/ssh/sshd_config
+    sed -i 's|UsePAM yes|UsePAM no|g' /etc/ssh/sshd_config
+    if systemctl is-system-running; then
+	systemctl restart ssh
+    fi
+}
+
+
+dc_disable_root_login () {
+    if [ -z "$(dc_has_user_account)" ]; then
+	dc_log_warn "Cannot disable root login, no users have been setup"
+	return
+    fi
+    passwd -d root
+    sed -i 's|[#]*PermitRootLogin yes|PermitRootLogin no|g' /etc/ssh/sshd_config
+    sed -i 's|[#]*PermitRootLogin prohibit-password|PermitRootLogin no|g' /etc/ssh/sshd_config
+    if systemctl is-system-running; then
+	systemctl restart ssh
+    fi
+}

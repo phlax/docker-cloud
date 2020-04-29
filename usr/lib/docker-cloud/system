@@ -1,0 +1,25 @@
+#!/bin/bash -e
+
+SWAPFILE=/var/swap/swap.img
+SWAPSIZE=1G
+SWAPINESS=1
+
+
+dc_create_swap () {
+    if [ -f $SWAPFILE ]; then
+	echo "Swap file already exists"
+	return
+    fi
+    echo "Creating swap file"
+    fallocate -l $SWAPSIZE $SWAPFILE
+    chmod 600 $SWAPFILE
+    mkswap $SWAPFILE
+    if grep -q swap /etc/fstab; then
+	echo "Swap already configured in fstab"
+    else
+	echo "Adding swap file to fstab"
+	echo "$SWAPFILE swap swap defaults 0 0" >> /etc/fstab
+    fi
+    sysctl vm.swappiness=$SWAPINESS
+    swapon $SWAPFILE
+}
