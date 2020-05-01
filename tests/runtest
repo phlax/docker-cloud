@@ -8,6 +8,10 @@ fi
 
 test_install () {
     docker-cloud install
+    lsmod | grep nfs
+    lsmod | grep nfsd
+    grep nfs /etc/modules-load.d/nfs.conf
+    grep nfsd /etc/modules-load.d/nfsd.conf
 }
 
 
