@@ -28,10 +28,13 @@ dc_create_user () {
 
 
 dc_create_apps_user () {
-    if id apps > /dev/null 2>&1; then
-	echo "User already exists: apps"
+    local docker_dir username
+    docker_dir="$1"
+    username="$2"
+    if id "$username" > /dev/null 2>&1; then
+	echo "User already exists: $username"
     else
-	echo "Creating user: apps"
+	echo "Creating user: $username"
 	useradd \
 	    -m \
 	    -d /home/apps \
@@ -41,10 +44,10 @@ dc_create_apps_user () {
 	    apps
 	gpasswd -a apps docker
     fi
-    if grep -q "$DOCKER_DIR" /home/apps/.bashrc; then
+    if grep -q "$docker_dir" /home/apps/.bashrc; then
 	echo "Setting apps virtualenv"
-	echo ". $DOCKER_DIR/bin/activate" >> /home/apps/.bashrc
-	echo "cd $DOCKER_DIR" >> /home/apps/.bashrc
+	echo ". $docker_dir/bin/activate" >> /home/apps/.bashrc
+	echo "cd $docker_dir" >> /home/apps/.bashrc
     fi
 }
 

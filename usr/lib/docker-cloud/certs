@@ -6,7 +6,6 @@
 
 dc_unpack_keys () {
     local tmpdir
-    echo "UNPACKING VPN CERTS FROM $1"
     tmpdir=$(mktemp -d)
     cd "$tmpdir"
     zcat "$1" > keys.tar.gpg

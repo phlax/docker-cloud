@@ -1,16 +1,15 @@
 #!/bin/bash -e
 
-DOCKER_DIR=/docker
-
-
 . /usr/lib/docker-cloud/common
 
 
 dc_create_docker_env () {
-    mkdir -p "$DOCKER_DIR"
-    chown apps:apps "$DOCKER_DIR"
-    cd "$DOCKER_DIR"
-    if [ -d "$DOCKER_DIR/bin" ]; then
+    local docker_dir
+    docker_dir="$1"
+    mkdir -p "$docker_dir"
+    chown apps:apps "$docker_dir"
+    cd "$docker_dir"
+    if [ -d "$docker_dir/bin" ]; then
 	sudo -u apps bash -c "\
 	  . bin/activate \
 	    && if [ -f docker-compose.yml ]; then docker-compose pull; fi"

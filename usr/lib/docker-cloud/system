@@ -1,25 +1,25 @@
 #!/bin/bash -e
 
-SWAPFILE=/var/swap/swap.img
-SWAPSIZE=1G
-SWAPINESS=1
+. /usr/lib/docker-cloud/common
 
 
 dc_create_swap () {
-    if [ -f $SWAPFILE ]; then
-	echo "Swap file already exists"
-	return
-    fi
-    echo "Creating swap file"
-    fallocate -l $SWAPSIZE $SWAPFILE
-    chmod 600 $SWAPFILE
-    mkswap $SWAPFILE
-    if grep -q swap /etc/fstab; then
-	echo "Swap already configured in fstab"
+    local swapiness swapfile swapsize
+    swapfile="$1"
+    swapsize="$2"
+    swapiness="$3"
+    if [ -f "$swapfile" ]; then
+	dc_log "Swap file already exists"
     else
-	echo "Adding swap file to fstab"
-	echo "$SWAPFILE swap swap defaults 0 0" >> /etc/fstab
+	fallocate -l "$swapsize" "$swapfile"
+	chmod 600 "$swapfile"
+	mkswap "$swapfile"
     fi
-    sysctl vm.swappiness=$SWAPINESS
-    swapon $SWAPFILE
+    if grep -q swap /etc/fstab; then
+	dc_log "Swap already configured in fstab"
+    else
+	echo "$swapfile swap swap defaults 0 0" >> /etc/fstab
+    fi
+    sysctl vm.swappiness="$swapiness"
+    swapon "$swapfile"
 }

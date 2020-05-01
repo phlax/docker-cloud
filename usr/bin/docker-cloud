@@ -11,13 +11,13 @@ case $CMD in
 	dc_unpack_keys "$2" "$3"
 	;;
     create-apps-user )
-	dc_create_apps_user
+	dc_create_apps_user "$1" "$2"
 	;;
     create-docker-env )
-	dc_create_docker_env
+	dc_create_docker_env "$1"
 	;;
     create-swap )
-	dc_create_swap
+	dc_create_swap "$1" "$2" "$3"
 	;;
     create-users )
 	dc_create_users "$2"
@@ -31,11 +31,22 @@ case $CMD in
     enable-firewall )
 	dc_enable_firewall
 	;;
+    enable-modules )
+	dc_enable_modules
+	;;
     install )
-	dc_create_swap
-	dc_create_apps_user
-	dc_create_docker_env
+	swapfile=$(jq -r '.swap.file' /etc/docker-cloud/config.json)
+	swapsize=$(jq -r '.swap.size' /etc/docker-cloud/config.json)
+	swapiness=$(jq -r '.swap.swapiness' /etc/docker-cloud/config.json)
+	appuser=$(jq -r '.user.name' /etc/docker-cloud/config.json)
+	modules=$(jq -r '.modules[]' /etc/docker-cloud/config.json | tr '\n' ' ')
+	dockerenv=$(jq -r '.docker.venv' /etc/docker-cloud/config.json)
+
+	dc_create_swap "$swapfile" "$swapsize" "$swapiness"
+	dc_create_apps_user "$dockerenv" "$appuser"
+	dc_create_docker_env "$dockerenv"
 	dc_enable_firewall
 	dc_setup_systemd
+	dc_enable_modules "$modules"
 	;;
 esac

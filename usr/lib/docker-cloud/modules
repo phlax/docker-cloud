@@ -1,0 +1,23 @@
+#!/bin/bash -e
+
+. /usr/lib/docker-cloud/common
+
+
+dc_enable_module () {
+    module="$1"
+    if [ ! -f "/etc/modules-load.d/${module}.conf" ]; then
+	echo "$module" > "/etc/modules-load.d/${module}.conf"
+    fi
+    if modprobe "$module";then
+	dc_log "Module loaded $module"
+    else
+	dc_log_warn "Unable to find module ($module), not loading"
+    fi
+}
+
+
+dc_enable_modules () {
+    for module in $1; do
+	dc_enable_module "$module"
+    done
+}
