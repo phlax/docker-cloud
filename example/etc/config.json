@@ -1,0 +1,15 @@
+{
+    "hostname": "sometesthost.foo.com",
+    "modules": ["nfs", "nfsd"],
+    "swap": {
+	"size": "1G",
+	"file": "/var/swap/swap.img",
+	"swapiness": 1
+    },
+    "user": {
+	"name": "apps"
+    },
+    "docker": {
+	"venv": "/docker"
+    }
+}

@@ -1,3 +1,7 @@
+# This composition example is for testing only
+# docker-cloud is not intended for installation
+# in a container
+
 version: "2.4"
 services:
   cloud:
@@ -8,8 +12,10 @@ services:
       - TERM=linux
       - DEBIAN_FRONTEND=noninteractive
     volumes:
+      - ${PWD}/example/etc:/etc/docker-cloud
       - ${PWD}/dist:/tmp/dist
       - ${PWD}/tests:/tmp/tests
       - ${PWD}/swap:/var/swap
       - ${PWD}/test.key:/tmp/test.key
       - /tmp/secret:/tmp/secret
+      - /lib/modules:/lib/modules
