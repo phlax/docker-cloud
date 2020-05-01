@@ -10,6 +10,6 @@ Package: docker-cloud
 Section: devel
 Priority: optional
 Architecture: all
-Depends: byobu, docker-ce, emacs-goodies-el, emacs-nox, git, gpg, jq, locales, openssh-server, procps, shorewall, sudo, virtualenv, yaml-mode
+Depends: docker-ce, git, gpg, jq, kmod, locales, openssh-server, procps, shorewall, sudo, virtualenv
 Description: Docker cloud setup
  Add dependencies, configuration and setup for docker-cloud servers
