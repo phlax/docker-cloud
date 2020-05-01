@@ -1,4 +1,10 @@
-docker-cloud (0.0.2) UNRELEASED; urgency=medium
+docker-cloud (0.0.3) UNRELEASED; urgency=medium
+
+  * Update lib code
+
+ -- Ryan Northey <ryan@synca.io>  Fri, 01 May 2020 11:14:50 +0100
+
+docker-cloud (0.0.2) buster; urgency=medium
 
   * Initial release.
   * Switch to docker-ce
