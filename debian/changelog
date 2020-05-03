@@ -1,4 +1,10 @@
-docker-cloud (0.0.4) UNRELEASED; urgency=medium
+docker-cloud (0.0.5) UNRELEASED; urgency=medium
+
+  * Fix - make swapon action idempotent
+
+ -- Ryan Northey <ryan@synca.io>  Sun, 03 May 2020 10:20:38 +0100
+
+docker-cloud (0.0.4) buster; urgency=medium
 
   * Tidy code and minor fixes
 
