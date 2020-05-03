@@ -78,11 +78,11 @@ test_create_users () {
 }
 
 
-test_unpack_keys () {
+test_unpack_secrets () {
     gpg --allow-secret-key-import --import /tmp/test.key
-    docker-cloud unpack-keys /tmp/secret/secret-keys.tar.gpg.gz /tmp/unpacked-keys
-    cat /tmp/unpacked-keys/key1 | grep VERYSECRET
-    cat /tmp/unpacked-keys/key2 | grep ALSOVERYSECRET
+    docker-cloud unpack-secrets /tmp/secret/secret-keys.tar.gpg.gz /tmp/unpacked-secrets
+    cat /tmp/unpacked-secrets/key1 | grep VERYSECRET
+    cat /tmp/unpacked-secrets/key2 | grep ALSOVERYSECRET
 }
 
 
@@ -92,4 +92,4 @@ test_disable_root_login_no_users
 test_create_users
 test_disable_password_login
 test_disable_root_login
-test_unpack_keys
+test_unpack_secrets
