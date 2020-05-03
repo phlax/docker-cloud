@@ -22,7 +22,7 @@ dc_create_docker_env () {
 	  && pip install docker-compose \
 	  &&  if [ -f docker-compose.yml ]; then docker-compose pull; fi"
     bashrc="/home/${docker_user}/.bashrc"
-    if grep -q "$docker_dir" bashrc; then
+    if grep -q "$docker_dir" "$bashrc"; then
 	echo ". $docker_dir/bin/activate" >> "$bashrc"
 	echo "cd $docker_dir" >> "$bashrc"
     fi
