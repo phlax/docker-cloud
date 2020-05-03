@@ -28,6 +28,9 @@ case $CMD in
     disable-root-login )
 	dc_disable_root_login
 	;;
+    edit-docker-config )
+	dc_edit_docker_config
+	;;
     enable-firewall )
 	dc_enable_firewall
 	;;
@@ -49,6 +52,7 @@ case $CMD in
 	dc_create_swap "$swapfile" "$swapsize" "$swapiness"
 	dc_create_apps_user "$appuser"
 	dc_create_docker_env "$dockerenv" "$appuser"
+	dc_edit_docker_config
 	dc_enable_firewall
 	dc_setup_systemd
 	dc_enable_modules "$modules"

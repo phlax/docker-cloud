@@ -45,3 +45,19 @@ dc_setup_systemd () {
     fi
     systemctl enable docker-cloud
 }
+
+
+dc_edit_docker_config () {
+    if [ ! -f /etc/docker/daemon.json ];then
+	mkdir -p /etc/docker
+	echo '{"experimental": true, "storage-driver": "overlay2"}' >> /etc/docker/daemon.json
+    else
+	jq '.experimental = true' /etc/docker/daemon.json \
+	    | sponge /etc/docker/daemon.json
+	jq '.storage-driver = "overlay2"' /etc/docker/daemon.json \
+	    | sponge /etc/docker/daemon.json
+    fi
+    if systemctl is-system-running; then
+	systemctl reload docker.service
+    fi
+}
