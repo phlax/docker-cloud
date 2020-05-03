@@ -25,5 +25,10 @@ dc_create_swap () {
 	echo "$swapfile swap swap defaults 0 0" >> /etc/fstab
     fi
     sysctl vm.swappiness="$swapiness"
-    swapon "$swapfile"
+    if grep "$swapfile" /proc/swaps; then
+	dc_log_warn "Swap already enabled on $swapfile"
+    else
+	swapon "$swapfile"
+	dc_log "Swap enabled on $swapfile"
+    fi
 }
