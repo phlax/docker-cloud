@@ -8,7 +8,11 @@ install:
 
 script:
   - . test.env
-  - $CLOUD pysh ./tmp/tests/runtest
+
+  - $CLOUD pysh ./tmp/tests/install
+  - $CLOUD pysh ./tmp/tests/users
+  - $CLOUD pysh ./tmp/tests/secrets
+
   - shellcheck -x usr/bin/docker-cloud
   - shellcheck -x usr/lib/docker-cloud/*
 

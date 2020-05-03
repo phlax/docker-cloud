@@ -1,0 +1,69 @@
+#!/bin/bash
+
+
+if [ ! -z "$TRAP_ERRORS" ]; then
+    trap "$TRAP_ERRORS" ERR
+fi
+
+
+create_user_config () {
+    mkdir -p /tmp/users/user0/home/.ssh
+    echo "SOMESETTING=bar" > /tmp/users/user0/home/.some-setting
+    touch /tmp/users/user0/home/some-file
+    password0=$(echo insecuretemppassword | mkpasswd --method=SHA-512 --stdin)
+    echo "$password0" > /tmp/users/user0/password
+    echo "DUMMYKEY" > /tmp/users/user0/home/.ssh/authorized_keys
+
+    mkdir -p /tmp/users/user1/home/.ssh
+    echo "ANOTHERSETTING=bar" > /tmp/users/user1/home/.another-setting
+    touch /tmp/users/user1/home/another-file
+    password1=$(echo insecuretemppassword | mkpasswd --method=SHA-512 --stdin)
+    echo "$password1" > /tmp/users/user1/password
+    echo "DUMMYKEY" > /tmp/users/user1/home/.ssh/authorized_keys
+}
+
+
+## disabling password/root login fails as there are no users
+docker-cloud disable-password-login 2> >(grep WARNING)
+docker-cloud disable-root-login 2> >(grep WARNING)
+
+
+## create some users with cert/sudo access
+create_user_config
+docker-cloud create-users /tmp/users
+
+
+## users have been created and are sudoers
+getent passwd | grep user0
+getent passwd | grep user1
+sudo -u user0 groups | grep sudo
+sudo -u user1 groups | grep sudo
+
+
+## their home directories have been populated
+ls -a /home/user0 | grep some-file
+cat /home/user0/.some-setting | grep SOMESETTING
+ls -a /home/user1 | grep another-file
+cat /home/user1/.another-setting | grep ANOTHERSETTING
+
+
+## a temporary password has been set
+cat /etc/shadow | grep user0 | grep "$password0"
+cat /etc/shadow | grep user1 | grep "$password1"
+
+
+## their password has been chaged
+chage -l user0 | grep Minimum | cut -d: -f2 | grep 0
+chage -l user1 | grep Minimum | cut -d: -f2 | grep 0
+
+
+## disable password login is successful now
+docker-cloud disable-password-login
+grep -e "^PasswordAuthentication" /etc/ssh/sshd_config | grep no
+grep -e "^UsePAM" /etc/ssh/sshd_config | grep no
+
+
+## disable root login is successful now
+docker-cloud disable-root-login
+grep -e "^PermitRootLogin" /etc/ssh/sshd_config | grep no
+grep -e "^root::" /etc/shadow
