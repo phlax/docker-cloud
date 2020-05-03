@@ -1,4 +1,10 @@
-docker-cloud (0.0.3) UNRELEASED; urgency=medium
+docker-cloud (0.0.4) UNRELEASED; urgency=medium
+
+  * Tidy code and minor fixes
+
+ -- Ryan Northey <ryan@synca.io>  Sun, 03 May 2020 08:41:22 +0100
+
+docker-cloud (0.0.3) buster; urgency=medium
 
   * Update lib code
 
