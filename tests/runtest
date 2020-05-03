@@ -12,6 +12,9 @@ test_install () {
     lsmod | grep nfsd
     grep nfs /etc/modules-load.d/nfs.conf
     grep nfsd /etc/modules-load.d/nfsd.conf
+
+    jq '.experimental' /etc/docker/daemon.json | grep true
+    jq -r '.["storage-driver"]' /etc/docker/daemon.json | grep overlay2
 }
 
 
