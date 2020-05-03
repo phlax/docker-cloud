@@ -39,7 +39,7 @@ testenv: deb testsecrets
 			&& add-apt-repository 'deb [arch=amd64] https://phlax.github.io/debian buster main' \
 			&& apt dist-upgrade -y -qq \
 			&& apt update" \
-		&& $$CLOUD apt install --no-install-recommends --no-install-suggests --reinstall -y -qq "/tmp/dist/docker-cloud_0.0.3_all.deb" \
+		&& $$CLOUD apt install --no-install-recommends --reinstall -y -qq /tmp/dist/docker-cloud_0.0.4_all.deb \
 		&& $$CLOUD bash -c "\
 			apt install -y -qq --no-install-recommends python3-pip \
 		      	&& pip3 install -U pip setuptools \
