@@ -35,6 +35,10 @@ case $CMD in
 	dc_enable_modules
 	;;
     install )
+	if [ ! -f /etc/docker-cloud/config.json ]; then
+	    dc_log_warn "No configuration file found, not installing"
+	    exit 0
+	fi
 	swapfile=$(jq -r '.swap.file' /etc/docker-cloud/config.json)
 	swapsize=$(jq -r '.swap.size' /etc/docker-cloud/config.json)
 	swapiness=$(jq -r '.swap.swapiness' /etc/docker-cloud/config.json)
