@@ -1,4 +1,10 @@
-docker-cloud (0.0.6) UNRELEASED; urgency=medium
+docker-cloud (0.0.7) UNRELEASED; urgency=medium
+
+  * Update don't install docker/daemon.json, edit it
+
+ -- Ryan Northey <ryan@synca.io>  Sun, 03 May 2020 15:51:42 +0100
+
+docker-cloud (0.0.6) buster; urgency=medium
 
   * Update bin - don't install if config absent
 
