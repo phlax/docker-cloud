@@ -7,17 +7,17 @@ CMD=$1
 
 
 case $CMD in
-    unpack-keys )
-	dc_unpack_keys "$2" "$3"
+    unpack-secrets )
+	dc_unpack_secrets "$2" "$3"
 	;;
     create-apps-user )
-	dc_create_apps_user "$1" "$2"
+	dc_create_apps_user "$2"
 	;;
     create-docker-env )
-	dc_create_docker_env "$1"
+	dc_create_docker_env "$2" "$3"
 	;;
     create-swap )
-	dc_create_swap "$1" "$2" "$3"
+	dc_create_swap "$2" "$3" "$4"
 	;;
     create-users )
 	dc_create_users "$2"
@@ -43,8 +43,8 @@ case $CMD in
 	dockerenv=$(jq -r '.docker.venv' /etc/docker-cloud/config.json)
 
 	dc_create_swap "$swapfile" "$swapsize" "$swapiness"
-	dc_create_apps_user "$dockerenv" "$appuser"
-	dc_create_docker_env "$dockerenv"
+	dc_create_apps_user "$appuser"
+	dc_create_docker_env "$dockerenv" "$appuser"
 	dc_enable_firewall
 	dc_setup_systemd
 	dc_enable_modules "$modules"

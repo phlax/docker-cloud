@@ -4,8 +4,9 @@
 
 
 dc_create_docker_env () {
-    local docker_dir
+    local docker_dir docker_user
     docker_dir="$1"
+    docker_user="$2"
     mkdir -p "$docker_dir"
     chown apps:apps "$docker_dir"
     cd "$docker_dir"
@@ -20,6 +21,11 @@ dc_create_docker_env () {
 	  && . bin/activate \
 	  && pip install docker-compose \
 	  &&  if [ -f docker-compose.yml ]; then docker-compose pull; fi"
+    bashrc="/home/${docker_user}/.bashrc"
+    if grep -q "$docker_dir" bashrc; then
+	echo ". $docker_dir/bin/activate" >> "$bashrc"
+	echo "cd $docker_dir" >> "$bashrc"
+    fi
 }
 
 

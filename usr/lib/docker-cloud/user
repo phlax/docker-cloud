@@ -6,12 +6,11 @@
 
 dc_create_user () {
     if id "$2" > /dev/null 2>&1; then
-	echo "User already exists: $2"
+	dc_log_warn "User already exists: $2"
 	chown -R "$2":"$2" "$1/$2/home"
 	cp -a "$1/$2/home/." "/home/$2/"
 	return
     fi
-    echo "Creating user: $2"
     useradd \
 	-m \
 	-d "/home/$2" \
@@ -28,26 +27,19 @@ dc_create_user () {
 
 
 dc_create_apps_user () {
-    local docker_dir username
-    docker_dir="$1"
-    username="$2"
+    local username
+    username="$1"
     if id "$username" > /dev/null 2>&1; then
-	echo "User already exists: $username"
+	dc_log_warn "User already exists: $username"
     else
-	echo "Creating user: $username"
 	useradd \
 	    -m \
-	    -d /home/apps \
+	    -d /home/"$username" \
 	    -k /etc/skel \
 	    -u 1000 \
 	    -s /bin/bash \
-	    apps
-	gpasswd -a apps docker
-    fi
-    if grep -q "$docker_dir" /home/apps/.bashrc; then
-	echo "Setting apps virtualenv"
-	echo ". $docker_dir/bin/activate" >> /home/apps/.bashrc
-	echo "cd $docker_dir" >> /home/apps/.bashrc
+	    "$username"
+	gpasswd -a "$username" docker
     fi
 }
 

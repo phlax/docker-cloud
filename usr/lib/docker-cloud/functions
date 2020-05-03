@@ -4,6 +4,6 @@
 . /usr/lib/docker-cloud/common
 . /usr/lib/docker-cloud/system
 . /usr/lib/docker-cloud/user
-. /usr/lib/docker-cloud/certs
+. /usr/lib/docker-cloud/secrets
 . /usr/lib/docker-cloud/docker
 . /usr/lib/docker-cloud/modules

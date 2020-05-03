@@ -8,6 +8,10 @@ dc_create_swap () {
     swapfile="$1"
     swapsize="$2"
     swapiness="$3"
+    swapdir=$(dirname "$swapfile")
+    if [ ! -d "$swapdir" ];then
+	mkdir "$swapdir"
+    fi
     if [ -f "$swapfile" ]; then
 	dc_log "Swap file already exists"
     else
