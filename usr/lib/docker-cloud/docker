@@ -3,32 +3,6 @@
 . /usr/lib/docker-cloud/common
 
 
-dc_create_docker_env () {
-    local docker_dir docker_user
-    docker_dir="$1"
-    docker_user="$2"
-    mkdir -p "$docker_dir"
-    chown apps:apps "$docker_dir"
-    cd "$docker_dir"
-    if [ -d "$docker_dir/bin" ]; then
-	sudo -u apps bash -c "\
-	  . bin/activate \
-	    && if [ -f docker-compose.yml ]; then docker-compose pull; fi"
-	return
-    fi
-    sudo -u apps bash -c "\
-    	virtualenv . -p /usr/bin/python3 \
-	  && . bin/activate \
-	  && pip install docker-compose \
-	  &&  if [ -f docker-compose.yml ]; then docker-compose pull; fi"
-    bashrc="/home/${docker_user}/.bashrc"
-    if grep -q "$docker_dir" "$bashrc"; then
-	echo ". $docker_dir/bin/activate" >> "$bashrc"
-	echo "cd $docker_dir" >> "$bashrc"
-    fi
-}
-
-
 dc_enable_firewall () {
     sed -i 's|[#]*startup=0|startup=1|g' /etc/default/shorewall
     sed -i 's|[#]*DOCKER=No|DOCKER=Yes|g' /etc/shorewall/shorewall.conf
@@ -44,20 +18,4 @@ dc_setup_systemd () {
 	systemctl daemon-reload
     fi
     systemctl enable docker-cloud
-}
-
-
-dc_edit_docker_config () {
-    if [ ! -f /etc/docker/daemon.json ];then
-	mkdir -p /etc/docker
-	echo '{"experimental": true, "storage-driver": "overlay2"}' >> /etc/docker/daemon.json
-    else
-	jq '.experimental = true' /etc/docker/daemon.json \
-	    | sponge /etc/docker/daemon.json
-	jq '.storage-driver = "overlay2"' /etc/docker/daemon.json \
-	    | sponge /etc/docker/daemon.json
-    fi
-    if systemctl is-system-running; then
-	systemctl reload docker.service
-    fi
 }

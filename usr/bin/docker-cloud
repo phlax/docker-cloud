@@ -13,9 +13,6 @@ case $CMD in
     create-apps-user )
 	dc_create_apps_user "$2"
 	;;
-    create-docker-env )
-	dc_create_docker_env "$2" "$3"
-	;;
     create-swap )
 	dc_create_swap "$2" "$3" "$4"
 	;;
@@ -27,9 +24,6 @@ case $CMD in
 	;;
     disable-root-login )
 	dc_disable_root_login
-	;;
-    edit-docker-config )
-	dc_edit_docker_config
 	;;
     enable-firewall )
 	dc_enable_firewall
@@ -47,12 +41,9 @@ case $CMD in
 	swapiness=$(jq -r '.swap.swapiness' /etc/docker-cloud/config.json)
 	appuser=$(jq -r '.user.name' /etc/docker-cloud/config.json)
 	modules=$(jq -r '.modules[]' /etc/docker-cloud/config.json | tr '\n' ' ')
-	dockerenv=$(jq -r '.docker.venv' /etc/docker-cloud/config.json)
 
 	dc_create_swap "$swapfile" "$swapsize" "$swapiness"
 	dc_create_apps_user "$appuser"
-	dc_create_docker_env "$dockerenv" "$appuser"
-	dc_edit_docker_config
 	dc_enable_firewall
 	dc_setup_systemd
 	dc_enable_modules "$modules"
