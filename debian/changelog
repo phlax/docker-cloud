@@ -1,4 +1,10 @@
-docker-cloud (0.0.7) UNRELEASED; urgency=medium
+docker-cloud (0.0.8) UNRELEASED; urgency=medium
+
+  * Remove docker-compose setup
+
+ -- Ryan Northey <ryan@synca.io>  Tue, 05 May 2020 09:17:44 +0100
+
+docker-cloud (0.0.7) buster; urgency=medium
 
   * Update don't install docker/daemon.json, edit it
 
