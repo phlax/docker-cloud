@@ -1,5 +1,4 @@
 usr/bin/docker-cloud usr/bin
 usr/lib/docker-cloud usr/lib
 etc/skel/.byobu etc/skel
-etc/shorewall/* etc/shorewall
 etc/systemd/system/docker-cloud.service etc/systemd/system
