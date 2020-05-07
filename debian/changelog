@@ -1,4 +1,10 @@
-docker-cloud (0.0.8) UNRELEASED; urgency=medium
+docker-cloud (0.0.9) UNRELEASED; urgency=medium
+
+  * Remove shorewall configuration
+
+ -- Ryan Northey <ryan@synca.io>  Thu, 07 May 2020 19:57:46 +0100
+
+docker-cloud (0.0.8) buster; urgency=medium
 
   * Remove docker-compose setup
 
