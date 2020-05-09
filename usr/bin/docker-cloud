@@ -45,7 +45,6 @@ case $CMD in
 	dc_create_swap "$swapfile" "$swapsize" "$swapiness"
 	dc_create_apps_user "$appuser"
 	dc_enable_firewall
-	dc_setup_systemd
 	dc_enable_modules "$modules"
 	;;
 esac

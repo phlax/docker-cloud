@@ -11,11 +11,3 @@ dc_enable_firewall () {
 	systemctl restart shorewall
     fi
 }
-
-
-dc_setup_systemd () {
-    if systemctl is-system-running; then
-	systemctl daemon-reload
-    fi
-    systemctl enable docker-cloud
-}
