@@ -1,4 +1,10 @@
-docker-cloud (0.0.9) UNRELEASED; urgency=medium
+docker-cloud (0.0.10) UNRELEASED; urgency=medium
+
+  * Remove docker start/stop from systemd unit
+
+ -- Ryan Northey <ryan@synca.io>  Sat, 09 May 2020 07:10:00 +0100
+
+docker-cloud (0.0.9) buster; urgency=medium
 
   * Remove shorewall configuration
 
