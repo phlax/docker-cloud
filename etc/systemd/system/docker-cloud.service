@@ -5,10 +5,10 @@ After=network.target docker.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-WorkingDirectory=/docker
+# WorkingDirectory=/docker
 # ExecStartPre=/usr/local/bin/configure-env
-ExecStart=/docker/bin/docker-compose up -d
-ExecStop=/docker/bin/docker-compose stop
+# ExecStart=/docker/bin/docker-compose up -d
+# ExecStop=/docker/bin/docker-compose stop
 
 [Install]
 WantedBy=multi-user.target
