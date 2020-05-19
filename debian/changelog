@@ -1,4 +1,12 @@
-docker-cloud (0.0.11) UNRELEASED; urgency=medium
+docker-cloud (0.0.12) UNRELEASED; urgency=medium
+
+  * Separate vm.swappiness to sysctl config
+  * Add ssh port mangling
+  * Improve and add tests
+
+ -- Ryan Northey <ryan@synca.io>  Tue, 19 May 2020 13:07:23 +0100
+
+docker-cloud (0.0.11) buster; urgency=medium
 
   * Remove systemd unit
 
