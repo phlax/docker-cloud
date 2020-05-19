@@ -46,6 +46,7 @@ case $CMD in
 	dc_create_apps_user "$appuser"
 	dc_enable_firewall
 	dc_enable_modules "$modules"
+	dc_clear_sysctl
 	if [ -n "$sysctls" ]; then
 	    for ctl in $sysctls; do
 		k=$(echo "$ctl" | cut -d, -f1)

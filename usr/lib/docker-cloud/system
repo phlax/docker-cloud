@@ -6,9 +6,15 @@
 SSHD_CONFIG=${SSHD_CONFIG:-/etc/ssh/sshd_config}
 
 
+dc_clear_sysctl () {
+    rm -rf /etc/sysctl.d/fatc*conf
+}
+
+
 dc_set_sysctl () {
     dc_log "Set sysctl: $1 = $2"
     sysctl -w "$1"="$2"
+    echo "$1 = $2" > "/etc/sysctl.d/fatc.${1}.conf"
 }
 
 
