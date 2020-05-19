@@ -14,7 +14,7 @@ case $CMD in
 	dc_create_apps_user "$2"
 	;;
     create-swap )
-	dc_create_swap "$2" "$3" "$4"
+	dc_create_swap "$2" "$3"
 	;;
     create-users )
 	dc_create_users "$2"
@@ -38,13 +38,27 @@ case $CMD in
 	fi
 	swapfile=$(jq -r '.swap.file' /etc/docker-cloud/config.json)
 	swapsize=$(jq -r '.swap.size' /etc/docker-cloud/config.json)
-	swapiness=$(jq -r '.swap.swapiness' /etc/docker-cloud/config.json)
 	appuser=$(jq -r '.user.name' /etc/docker-cloud/config.json)
 	modules=$(jq -r '.modules[]' /etc/docker-cloud/config.json | tr '\n' ' ')
+	sysctls=$(jq -r '.sysctl | to_entries[] | join(",")' etc/docker-cloud/config.json | tr '\n' ' ')
+	ssh_ports=$(jq -r '.ssh.ports[]' /etc/docker-cloud/config.json)
 
-	dc_create_swap "$swapfile" "$swapsize" "$swapiness"
+	dc_create_swap "$swapfile" "$swapsize"
 	dc_create_apps_user "$appuser"
 	dc_enable_firewall
 	dc_enable_modules "$modules"
+	for ctl in $sysctls; do
+	    k=$(echo "$ctl" | cut -d, -f1)
+	    v=$(echo "$ctl" | cut -d, -f2)
+	    dc_set_sysctl "$k" "$v"
+	done
+	dc_set_ssh_ports "$ssh_ports"
+	;;
+    set-ssh-ports )
+	shift
+	dc_set_set_ssh_ports "$@"
+	;;
+    set-sysctl )
+	dc_set_sysctl "$2" "$3"
 	;;
 esac
