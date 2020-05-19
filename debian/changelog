@@ -1,4 +1,11 @@
-docker-cloud (0.0.12) UNRELEASED; urgency=medium
+docker-cloud (0.0.13) UNRELEASED; urgency=medium
+
+  * Fix: don't fail on install if ssh/sysctl config are empty
+  * Fix: path in tool
+
+ -- Ryan Northey <ryan@synca.io>  Tue, 19 May 2020 13:38:49 +0100
+
+docker-cloud (0.0.12) buster; urgency=medium
 
   * Separate vm.swappiness to sysctl config
   * Add ssh port mangling
