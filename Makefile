@@ -39,9 +39,13 @@ testenv: deb testsecrets
 			&& add-apt-repository 'deb [arch=amd64] https://phlax.github.io/debian buster main' \
 			&& apt dist-upgrade -y -qq \
 			&& apt update" \
-		&& $$CLOUD apt install --no-install-recommends --reinstall -y -qq /tmp/dist/docker-cloud_0.0.11_all.deb \
+		&& $$CLOUD apt install --no-install-recommends --reinstall -y -qq /tmp/dist/docker-cloud_0.0.12_all.deb \
 		&& $$CLOUD bash -c "\
-			apt install -y -qq --no-install-recommends python3-pip \
+			echo 'Port 22' >> /etc/ssh/sshd_config \
+			&& echo 'Port 222' >> /etc/ssh/sshd_config \
+			&& echo '#Port 333' >> /etc/ssh/sshd_config \
+			&& echo 'Port 555' >> /etc/ssh/sshd_config \
+			&& apt install -y -qq --no-install-recommends python3-pip \
 		      	&& pip3 install -U pip setuptools \
 			&& pip3 install termcolor \
 			&& pip3 install -e 'git+https://github.com/phlax/pysh#egg=pysh.test&subdirectory=pysh.test'"

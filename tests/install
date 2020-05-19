@@ -6,8 +6,22 @@ if [ ! -z "$TRAP_ERRORS" ]; then
 fi
 
 
+# install
 docker-cloud install
+
+# nfs modules loaded and configured
 lsmod | grep nfs
 lsmod | grep nfsd
 grep nfs /etc/modules-load.d/nfs.conf
 grep nfsd /etc/modules-load.d/nfsd.conf
+
+# ssh ports mangled
+grep "^#Port 22" /etc/ssh/sshd_config
+grep "^Port 222" /etc/ssh/sshd_config
+grep "^Port 333" /etc/ssh/sshd_config
+grep "^Port 444" /etc/ssh/sshd_config
+grep "^#Port 555" /etc/ssh/sshd_config
+
+# sysfs settings updated
+sysctl vm.swappiness | grep 1
+sysctl vm.max_map_count | grep 262144
