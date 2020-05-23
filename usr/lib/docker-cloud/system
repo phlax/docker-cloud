@@ -72,3 +72,15 @@ dc_create_swap () {
 	dc_log "Swap enabled on $swapfile"
     fi
 }
+
+
+dc_set_grub_timeout () {
+    if [ "$1" = "5" ]; then
+	return
+    fi
+    if grep "^GRUB_TIMEOUT=5" /etc/default/grub; then
+	dc_log "Setting grub timeout to ${1}"
+	sed -i s/GRUB_TIMEOUT=5/GRUB_TIMEOUT="$1"/ /etc/default/grub
+	update-grub
+    fi
+}
