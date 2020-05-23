@@ -39,7 +39,7 @@ testenv: deb testsecrets
 			&& add-apt-repository 'deb [arch=amd64] https://phlax.github.io/debian buster main' \
 			&& apt dist-upgrade -y -qq \
 			&& apt update" \
-		&& $$CLOUD apt install --no-install-recommends --reinstall -y -qq /tmp/dist/docker-cloud_0.0.14_all.deb \
+		&& $$CLOUD apt install --no-install-recommends --reinstall -y -qq /tmp/dist/docker-cloud_0.0.15_all.deb \
 		&& $$CLOUD bash -c "\
 			echo 'Port 22' >> /etc/ssh/sshd_config \
 			&& echo 'Port 222' >> /etc/ssh/sshd_config \
