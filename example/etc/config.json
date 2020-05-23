@@ -1,6 +1,9 @@
 {
     "hostname": "sometesthost.foo.com",
     "modules": ["nfs", "nfsd"],
+    "grub": {
+	"timeout": "0"
+    },
     "swap": {
 	"size": "1G",
 	"file": "/var/swap/swap.img"

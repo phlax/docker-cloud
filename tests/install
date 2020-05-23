@@ -5,6 +5,10 @@ if [ ! -z "$TRAP_ERRORS" ]; then
     trap "$TRAP_ERRORS" ERR
 fi
 
+# setup grub test
+echo "GRUB_TIMEOUT=5" >> /etc/default/grub
+echo "echo \"GRUB UPDATED\" > /tmp/grub-update" > /usr/local/bin/update-grub
+chmod +x /usr/local/bin/update-grub
 
 # install
 docker-cloud install
@@ -27,3 +31,7 @@ sysctl vm.swappiness | grep 1
 sysctl vm.max_map_count | grep 262144
 grep vm.swappiness /etc/sysctl.d/fatc.vm.swappiness.conf | grep 1
 grep vm.max_map_count /etc/sysctl.d/fatc.vm.max_map_count.conf | grep 262144
+
+# grub timeout
+grep "GRUB_TIMEOUT=0" /etc/default/grub
+grep "GRUB UPDATED" /tmp/grub-update
