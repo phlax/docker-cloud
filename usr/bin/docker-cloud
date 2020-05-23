@@ -36,7 +36,7 @@ case $CMD in
 	    dc_log_warn "No configuration file found, not installing"
 	    exit 0
 	fi
-	grub_timeout=$(jq -r '.grub.timeout' /etc/docker-cloud/config.json)
+	grub_timeout=$(jq -r '.grub.timeout // null' /etc/docker-cloud/config.json)
 	swapfile=$(jq -r '.swap.file' /etc/docker-cloud/config.json)
 	swapsize=$(jq -r '.swap.size' /etc/docker-cloud/config.json)
 	appuser=$(jq -r '.user.name' /etc/docker-cloud/config.json)
